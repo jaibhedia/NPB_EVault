@@ -1,7 +1,3 @@
-import { NFTStorage, File } from 'nft.storage';
-
-const client = new NFTStorage({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDBkODk0MkFGRDI4QUU0NjMzNjc5MEJjQzU0MzVhZTQ5NzAyNEU5MjMiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY5OTQzODg2NDc2NiwibmFtZSI6ImxhbmQifQ.6fwfWirELjJsvHTeup2-vKXG09Smu49Sr7XLhCmE9lo' });
-
 // Connect to MetaMask
 let account;
 
@@ -194,15 +190,7 @@ async function calculateHash() {
         return null; // Return null if no file is selected
     }
 }
-async function storeFileOnNFTStorage(file) {
-    const metadata = await client.store({
-        name: file.name,
-        description: 'Legal Document',
-        image: new File([file], file.name, { type: file.type })
-    });
 
-    return metadata.url;
-}
 // Create a legal record with document hash
 const createLegalRecord = async () => {
     const title = document.getElementById("title").value;
@@ -210,11 +198,7 @@ const createLegalRecord = async () => {
     const fileInput = document.getElementById("fileInput");
     const createRecordArea = document.getElementById("createRecordArea");
     const CreateTableContainer = document.getElementById("CreateTableContainer"); // New container for the table wrapper
-    const documentFile = fileInput.files[0];
-    if (!documentFile) {
-        logMessage("No document file selected.");
-        return;
-    }
+
     try {
         // Check if MetaMask is installed and connected
         if (typeof window.ethereum !== "undefined") {
@@ -262,8 +246,7 @@ const createLegalRecord = async () => {
                 const tableWrapper = document.createElement("div");
                 tableWrapper.classList.add("table-wrapper");
                 tableWrapper.innerHTML = transactionDetails;
-                const fileUrl = await storeFileOnNFTStorage(documentFile);
-               
+
                 // Clear the previous content in the CreateTableContainer
                 CreateTableContainer.innerHTML = "";
 
@@ -326,9 +309,7 @@ const getLegalRecord = async () => {
 
                 // Create the download link
                 const downloadLink = document.createElement("a");
-                //downloadLink.href = `download.php?id=${data[0]}`;
-                const fileUrl = data[4]; // Assuming data[4] contains the URL
-        downloadLink.href = fileUrl;
+                downloadLink.href = `download.php?id=${data[0]}`;
                 downloadLink.textContent = "Download Document"; // You can customize the link text here
 
                 // Append the download link to the downloadLinkContainer
@@ -338,8 +319,6 @@ const getLegalRecord = async () => {
                 downloadLinkContainer.style.display = "block";
 
                 logMessage("Legal record fetched successfully.");
-                
-                
             } else {
                 // No valid record found
                 GetTableContainer.innerHTML = ""; // Clear the container
