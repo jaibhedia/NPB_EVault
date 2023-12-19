@@ -160,7 +160,7 @@ const connectContract = async () => {
             "type": "function"
         }
     ];
-    const Address = "0x067f145dD8a42045aaC7e6E4E8854120bAd58C51"; // Your contract address
+    const Address = "0x7284e5e1AE35A02348282c823Cc76350F9320531"; // Your contract address
     
     window.web3 = await new Web3(window.ethereum);
     window.contract = await new window.web3.eth.Contract(ABI, Address);
